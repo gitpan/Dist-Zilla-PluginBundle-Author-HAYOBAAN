@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 # ABSTRACT: Hayo Baan's Dist::Zilla configuration
-our $VERSION = '0.001'; # VERSION
+our $VERSION = '0.002'; # VERSION
 
 #pod =for test_synopsis
 #pod my @HAYOBAAN;
@@ -11,7 +11,72 @@ our $VERSION = '0.001'; # VERSION
 #pod =head1 DESCRIPTION
 #pod
 #pod This is a L<Dist::Zilla> PluginBundle. It installs and configures
-#pod L<Dist::Zilla> plugins according to HAYOBAAN's preferences.
+#pod L<Dist::Zilla> plugins according to HAYOBAAN's preferences. The
+#pod following plugins are (conditionally) installed and configured:
+#pod
+#pod   Dist::Zilla::Plugin::AutoVersion
+#pod   Dist::Zilla::Plugin::Git::NextVersion
+#pod   Dist::Zilla::Plugin::OurPkgVersion
+#pod   Dist::Zilla::Plugin::GatherDir
+#pod   Dist::Zilla::Plugin::Git::GatherDir
+#pod   Dist::Zilla::Plugin::PruneCruft
+#pod   Dist::Zilla::Plugin::ManifestSkip
+#pod   Dist::Zilla::Plugin::PodWeaver
+#pod   Dist::Zilla::Plugin::ReadmeAnyFromPod / Text
+#pod   Dist::Zilla::Plugin::ReadmeAnyFromPod / Markdown
+#pod   Dist::Zilla::Plugin::License
+#pod   Dist::Zilla::Plugin::InstallGuide
+#pod   Dist::Zilla::Plugin::MinimumPerl
+#pod   Dist::Zilla::Plugin::AutoPrereqs
+#pod   Dist::Zilla::Plugin::MetaNoIndex
+#pod   Dist::Zilla::Plugin::GitHub::Meta
+#pod   Dist::Zilla::Plugin::MetaJSON
+#pod   Dist::Zilla::Plugin::MetaYAML
+#pod   Dist::Zilla::Plugin::MetaProvides::Package
+#pod   Dist::Zilla::Plugin::MetaProvides::Class
+#pod   Dist::Zilla::Plugin::ExecDir
+#pod   Dist::Zilla::Plugin::ShareDir
+#pod   Dist::Zilla::Plugin::MakeMaker
+#pod   Dist::Zilla::Plugin::ModuleBuild
+#pod   Dist::Zilla::Plugin::Manifest
+#pod   Dist::Zilla::Plugin::CopyFilesFromBuild
+#pod   Dist::Zilla::Plugin::Run::AfterBuild
+#pod   Dist::Zilla::Plugin::CheckChangesHasContent
+#pod   Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch
+#pod   Dist::Zilla::Plugin::Git::Check
+#pod   Dist::Zilla::Plugin::CheckMetaResources
+#pod   Dist::Zilla::Plugin::CheckPrereqsIndexed
+#pod   Dist::Zilla::Plugin::Test::Compile
+#pod   Dist::Zilla::Plugin::Test::Perl::Critic
+#pod   Dist::Zilla::Plugin::Test::EOL
+#pod   Dist::Zilla::Plugin::Test::NoTabs
+#pod   Dist::Zilla::Plugin::Test::Version
+#pod   Dist::Zilla::Plugin::Test::MinimumVersion
+#pod   Dist::Zilla::Plugin::MojibakeTests
+#pod   Dist::Zilla::Plugin::Test::Kwalitee
+#pod   Dist::Zilla::Plugin::Test::Portability
+#pod   Dist::Zilla::Plugin::Test::UnusedVars
+#pod   Dist::Zilla::Plugin::Test::CPAN::Changes
+#pod   Dist::Zilla::Plugin::Test::DistManifest
+#pod   Dist::Zilla::Plugin::Test::CPAN::Meta::JSON
+#pod   Dist::Zilla::Plugin::MetaTests
+#pod   Dist::Zilla::Plugin::PodSyntaxTests
+#pod   Dist::Zilla::Plugin::PodCoverageTests
+#pod   Dist::Zilla::Plugin::Test::Pod::LinkCheck
+#pod   Dist::Zilla::Plugin::Test::Synopsis
+#pod   Dist::Zilla::Plugin::TestRelease
+#pod   Dist::Zilla::Plugin::RunExtraTests
+#pod   Dist::Zilla::Plugin::ConfirmRelease
+#pod   Dist::Zilla::Plugin::UploadToCPAN
+#pod   Dist::Zilla::Plugin::SchwartzRatio
+#pod   Dist::Zilla::Plugin::FakeRelease
+#pod   Dist::Zilla::Plugin::NextRelease
+#pod   Dist::Zilla::Plugin::Git::Commit
+#pod   Dist::Zilla::Plugin::Git::Tag
+#pod   Dist::Zilla::Plugin::Git::Push
+#pod   Dist::Zilla::Plugin::GitHub::Update
+#pod   Dist::Zilla::Plugin::Run::AfterRelease
+#pod   Dist::Zilla::Plugin::Clean
 #pod
 #pod =head1 USAGE
 #pod
@@ -56,6 +121,46 @@ use Moose 0.99;
 use namespace::autoclean 0.09;
 use Dist::Zilla 5.014; # default_jobs
 with 'Dist::Zilla::Role::PluginBundle::Easy';
+
+# Required non-core Dist::Zilla plugins:
+use Dist::Zilla::Plugin::Git::NextVersion ();
+use Dist::Zilla::Plugin::OurPkgVersion ();
+use Dist::Zilla::Plugin::Git::GatherDir ();
+use Dist::Zilla::Plugin::PodWeaver ();
+use Dist::Zilla::Plugin::ReadmeAnyFromPod ();
+use Dist::Zilla::Plugin::InstallGuide ();
+use Dist::Zilla::Plugin::MinimumPerl ();
+use Dist::Zilla::Plugin::GitHub::Meta ();
+use Dist::Zilla::Plugin::MetaProvides ();
+use Dist::Zilla::Plugin::CopyFilesFromBuild ();
+use Dist::Zilla::Plugin::Run ();
+use Dist::Zilla::Plugin::CheckChangesHasContent ();
+use Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch ();
+use Dist::Zilla::Plugin::Git::Check ();
+use Dist::Zilla::Plugin::CheckMetaResources ();
+use Dist::Zilla::Plugin::CheckPrereqsIndexed ();
+use Dist::Zilla::Plugin::Test::Compile ();
+use Dist::Zilla::Plugin::Test::Perl::Critic ();
+use Dist::Zilla::Plugin::Test::EOL ();
+use Dist::Zilla::Plugin::Test::NoTabs ();
+use Dist::Zilla::Plugin::Test::Version ();
+use Dist::Zilla::Plugin::Test::MinimumVersion ();
+use Dist::Zilla::Plugin::MojibakeTests ();
+use Dist::Zilla::Plugin::Test::Kwalitee ();
+use Dist::Zilla::Plugin::Test::Portability ();
+use Dist::Zilla::Plugin::Test::UnusedVars ();
+use Dist::Zilla::Plugin::Test::CPAN::Changes ();
+use Dist::Zilla::Plugin::Test::DistManifest ();
+use Dist::Zilla::Plugin::Test::CPAN::Meta::JSON ();
+use Dist::Zilla::Plugin::Test::Pod::LinkCheck ();
+use Dist::Zilla::Plugin::Test::Synopsis ();
+use Dist::Zilla::Plugin::RunExtraTests ();
+use Dist::Zilla::Plugin::SchwartzRatio ();
+use Dist::Zilla::Plugin::Git::Commit ();
+use Dist::Zilla::Plugin::Git::Tag ();
+use Dist::Zilla::Plugin::Git::Push ();
+use Dist::Zilla::Plugin::GitHub::Update ();
+use Dist::Zilla::Plugin::Clean ();
 
 sub mvp_multivalue_args { qw(git_remote run_after_build run_after_release additional_test disable_test) }
 
@@ -221,7 +326,8 @@ has run_after_release => (
 
 #pod =attr additional_test
 #pod
-#pod Additional test plugin to use. Can be used multiple times.
+#pod Additional test plugin to use. Can be used multiple times to add more
+#pod than one additional test.
 #pod
 #pod By default the following tests are executed:
 #pod
@@ -256,7 +362,8 @@ has additional_test => (
 
 #pod =attr disable_test
 #pod
-#pod Specifies the tests you don't want to run.
+#pod Specifies the test you don't want to be run. Can bu used more than
+#pod once to disable multiple tests.
 #pod
 #pod Default: I<none> (i.e., run all default and C<additional_test> tests).
 #pod
@@ -504,10 +611,12 @@ sub configure {
             'Git::CheckFor::CorrectBranch',
             # Check git repository for uncommitted files before releasing
             [ 'Git::Check' => { allow_dirty => $self->allow_dirty } ],
-            # Check resources section of meta files
-            'CheckMetaResources',
-            # Check if prereqs are available on CPAN
-            'CheckPrereqsIndexed',
+            $self->is_cpan ? (
+                # Check resources section of meta files
+                'CheckMetaResources',
+                # Check if prereqs are available on CPAN
+                'CheckPrereqsIndexed',
+            ) : (),
         ) : (),
 
         # Extra test (gatherdir)
@@ -634,12 +743,77 @@ Dist::Zilla::PluginBundle::Author::HAYOBAAN - Hayo Baan's Dist::Zilla configurat
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 DESCRIPTION
 
 This is a L<Dist::Zilla> PluginBundle. It installs and configures
-L<Dist::Zilla> plugins according to HAYOBAAN's preferences.
+L<Dist::Zilla> plugins according to HAYOBAAN's preferences. The
+following plugins are (conditionally) installed and configured:
+
+  Dist::Zilla::Plugin::AutoVersion
+  Dist::Zilla::Plugin::Git::NextVersion
+  Dist::Zilla::Plugin::OurPkgVersion
+  Dist::Zilla::Plugin::GatherDir
+  Dist::Zilla::Plugin::Git::GatherDir
+  Dist::Zilla::Plugin::PruneCruft
+  Dist::Zilla::Plugin::ManifestSkip
+  Dist::Zilla::Plugin::PodWeaver
+  Dist::Zilla::Plugin::ReadmeAnyFromPod / Text
+  Dist::Zilla::Plugin::ReadmeAnyFromPod / Markdown
+  Dist::Zilla::Plugin::License
+  Dist::Zilla::Plugin::InstallGuide
+  Dist::Zilla::Plugin::MinimumPerl
+  Dist::Zilla::Plugin::AutoPrereqs
+  Dist::Zilla::Plugin::MetaNoIndex
+  Dist::Zilla::Plugin::GitHub::Meta
+  Dist::Zilla::Plugin::MetaJSON
+  Dist::Zilla::Plugin::MetaYAML
+  Dist::Zilla::Plugin::MetaProvides::Package
+  Dist::Zilla::Plugin::MetaProvides::Class
+  Dist::Zilla::Plugin::ExecDir
+  Dist::Zilla::Plugin::ShareDir
+  Dist::Zilla::Plugin::MakeMaker
+  Dist::Zilla::Plugin::ModuleBuild
+  Dist::Zilla::Plugin::Manifest
+  Dist::Zilla::Plugin::CopyFilesFromBuild
+  Dist::Zilla::Plugin::Run::AfterBuild
+  Dist::Zilla::Plugin::CheckChangesHasContent
+  Dist::Zilla::Plugin::Git::CheckFor::CorrectBranch
+  Dist::Zilla::Plugin::Git::Check
+  Dist::Zilla::Plugin::CheckMetaResources
+  Dist::Zilla::Plugin::CheckPrereqsIndexed
+  Dist::Zilla::Plugin::Test::Compile
+  Dist::Zilla::Plugin::Test::Perl::Critic
+  Dist::Zilla::Plugin::Test::EOL
+  Dist::Zilla::Plugin::Test::NoTabs
+  Dist::Zilla::Plugin::Test::Version
+  Dist::Zilla::Plugin::Test::MinimumVersion
+  Dist::Zilla::Plugin::MojibakeTests
+  Dist::Zilla::Plugin::Test::Kwalitee
+  Dist::Zilla::Plugin::Test::Portability
+  Dist::Zilla::Plugin::Test::UnusedVars
+  Dist::Zilla::Plugin::Test::CPAN::Changes
+  Dist::Zilla::Plugin::Test::DistManifest
+  Dist::Zilla::Plugin::Test::CPAN::Meta::JSON
+  Dist::Zilla::Plugin::MetaTests
+  Dist::Zilla::Plugin::PodSyntaxTests
+  Dist::Zilla::Plugin::PodCoverageTests
+  Dist::Zilla::Plugin::Test::Pod::LinkCheck
+  Dist::Zilla::Plugin::Test::Synopsis
+  Dist::Zilla::Plugin::TestRelease
+  Dist::Zilla::Plugin::RunExtraTests
+  Dist::Zilla::Plugin::ConfirmRelease
+  Dist::Zilla::Plugin::UploadToCPAN
+  Dist::Zilla::Plugin::SchwartzRatio
+  Dist::Zilla::Plugin::FakeRelease
+  Dist::Zilla::Plugin::NextRelease
+  Dist::Zilla::Plugin::Git::Commit
+  Dist::Zilla::Plugin::Git::Tag
+  Dist::Zilla::Plugin::Git::Push
+  Dist::Zilla::Plugin::GitHub::Update
+  Dist::Zilla::Plugin::Run::AfterRelease
+  Dist::Zilla::Plugin::Clean
 
 =head1 USAGE
 
@@ -805,7 +979,8 @@ To not do anything:
 
 =head2 additional_test
 
-Additional test plugin to use. Can be used multiple times.
+Additional test plugin to use. Can be used multiple times to add more
+than one additional test.
 
 By default the following tests are executed:
 
@@ -887,7 +1062,8 @@ C<Test::Synopsis> -- Checks the pod synopsis
 
 =head2 disable_test
 
-Specifies the tests you don't want to run.
+Specifies the test you don't want to be run. Can bu used more than
+once to disable multiple tests.
 
 Default: I<none> (i.e., run all default and C<additional_test> tests).
 

@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 # ABSTRACT: HAYOBAAN's Pod::Weaver configuration
-our $VERSION = '0.001'; # VERSION
+our $VERSION = '0.002'; # VERSION
 
 #pod =head1 DESCRIPTION
 #pod
@@ -118,6 +118,10 @@ our $VERSION = '0.001'; # VERSION
 use Pod::Weaver::Config::Assembler;
 sub _exp { Pod::Weaver::Config::Assembler->expand_package( $_[0] ) }
 
+# Required non-core Pod Weaver modules
+use Pod::Elemental::Transformer::List ();
+use Pod::Elemental::PerlMunger ();
+
 sub mvp_bundle_config {
     my @plugins;
     push @plugins, (
@@ -186,7 +190,7 @@ Pod::Weaver::PluginBundle::Author::HAYOBAAN - HAYOBAAN's Pod::Weaver configurati
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 DESCRIPTION
 
